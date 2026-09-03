@@ -66,7 +66,7 @@ public function softDelete(Request $request, User $user)
 public function unsuspend(Request $request,User $user)
 {
     // admins
-    admins=$request->user();
+    $admins=$request->user();
     if($admins->role !== 'admin' && $admins->role !== 'super_admin'){
         abort(403,'Unauthorised');
     }
