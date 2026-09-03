@@ -84,16 +84,36 @@ public function unsuspend(Request $request,User $user)
 
 
 // view suspended users
-public function viewSuspended()
+public function viewSuspended(Request $request)
 {
-    $suspended=User::where('status','suspended')->lates();
-    return response()->json($suspended);
+     $admins=$request->user();
+    if($admins->role !== 'admin' && $admins->role !== 'super_admin'){
+      abort(403,'Unauthorised');
+    }
+
+    // susupended users
+
+    $users=User::where('status','suspended')->get();
+    foreach($users as $user){
+        if ($user->status !== 'suspended'){
+            abort(405,'different category');
+        }
+    }
+    return response()->json($users);
 }
 
 // change role to admin
-public function makeAdmin(User $user)
+public function makeAdmin(Request $request,User $user)
 {
-   
+     $admins=$request->user();
+    if($admins->role !== 'admin' && $admins->role !== 'super_admin'){
+      abort(403,'Unauthorised');
+    }
+    if($user->status !== 'active'){
+        return response()->json([
+            'message'=>'inactive users can not be promoted'
+        ],405);
+    }
     $user->update([
         'role'=>'admin'
     ]); 
@@ -107,9 +127,18 @@ public function makeAdmin(User $user)
 }
 // demote role to user
 
-public function demoteAdmin(User $user)
+public function demoteAdmin(Request $request,User $user)
 {
-$user->update([
+     $admins=$request->user();
+    if($admins->role !== 'admin' && $admins->role !== 'super_admin'){
+      abort(403,'Unauthorised');
+    }
+    if($user->role !== 'admin'){
+        return response()->json([
+            'message'=>'user is not an admin yet'
+        ],405);
+    }
+    $user->update([
         'role'=>'user'
     ]); 
 
