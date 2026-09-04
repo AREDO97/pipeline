@@ -46,6 +46,8 @@ Route::post('/user/update/{user}',[UserController::class,'update'])
 ->middleware('auth:sanctum');
 
 // events management
+Route::get('/events',[EventsController::class,'index'])
+->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum', 'role:admin,super_admin'])->group(function () {
 

@@ -45,6 +45,7 @@ class EventsController extends Controller
     // update events
     public function update(Request $request, Event $event)
     {
+        
          $request->validate([
             'title'=>'max:100',
             'description'=>'max:100',

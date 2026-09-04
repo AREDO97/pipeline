@@ -2,7 +2,12 @@ name: Laravel CI
 
 on:
   push:
+    branches:
+      - main
+      - feature/**
   pull_request:
+    branches:
+      - main
 
 jobs:
   tests:
@@ -18,22 +23,22 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          extensions: mbstring, pdo_sqlite
+          coverage: none
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Prepare Laravel environment
         run: |
           cp .env.example .env
           php artisan key:generate
 
-      - name: Prepare SQLite database
-        run: |
-          touch database/database.sqlite
+      - name: Run migrations
+        run: php artisan migrate --force
 
-      - name: Run tests
-        env:
-          APP_ENV: testing
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
+      - name: Run Pest tests
         run: php artisan test
+
+      - name: Check code formatting
+        run: ./vendor/bin/pint --test

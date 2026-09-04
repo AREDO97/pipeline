@@ -44,3 +44,16 @@ test('admins can delete an event', function () {
 
     $response->assertStatus(200);
 });
+
+// access all events
+test('users can acces events', function () {
+
+    // user
+    $user=User::factory()->create();
+    Sanctum::actingAs($user);
+   // create event
+    $events=Event::factory()->count(10)->create();
+    $response = $this->getJson('/api/events');
+
+    $response->assertStatus(200);
+});
