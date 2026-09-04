@@ -71,12 +71,15 @@ class EventsController extends Controller
         ]);
     }
     // delete events
-    public function destroy(Event $event)
+    public function destroy(Request $request,Event $event)
     {
+        $admins=$request->user();
+        if($admins->role !== 'admin' && $admins->role !== 'super_admin'){
+            abort(403,'unauthorised');
+        }
         $event->update([
             'status'=>'deleted'
         ]);
-
 
         // response 
         return response()->json([
