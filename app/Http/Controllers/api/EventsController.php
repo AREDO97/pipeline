@@ -110,4 +110,9 @@ class EventsController extends Controller
         // response
         return response()->json($events);
     }
+    // access one event
+    public function oneEvent(Event $event)
+    {
+        return response()->json($event);    
+    }
 }
