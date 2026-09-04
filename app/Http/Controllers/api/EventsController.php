@@ -44,6 +44,10 @@ class EventsController extends Controller
     public function update(Request $request, Event $event)
     {
 
+        $admins = $request->user();
+        if ($admins->role !== 'admin' && $admins->role !== 'super_admin') {
+            abort(403, 'unauthorised');
+        }
         $request->validate([
             'title' => 'max:100',
             'description' => 'max:100',
