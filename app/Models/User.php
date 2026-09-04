@@ -30,4 +30,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // audits
+    public function audits()
+    {
+        return $this->hasMany(Audit::class);
+    }
 }

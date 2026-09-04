@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Audit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 
@@ -13,6 +14,11 @@ test('user can create an account', function () {
         'email' => 'van@gmail.com',
         'password' => 'ivan256@@',
     ]);
+   $log=Audit::factory()->create([
+        'user_id'=>User::factory()->create(),
+        'action'=>'Account creation',
+        'body'=>'user created an account'
+   ]);
 
     $response->assertStatus(201);
 });
