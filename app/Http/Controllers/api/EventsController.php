@@ -101,4 +101,13 @@ class EventsController extends Controller
         // response
         return response()->json($events);
     }
+    // user events
+    public function userEvents(Request $request){
+        
+        $user = $request->user();
+        $events = Event::where('user_id', $user->id)->latest()->paginate(10);
+
+        // response
+        return response()->json($events);
+    }
 }
