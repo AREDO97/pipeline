@@ -20,11 +20,11 @@ class EventFactory extends Factory
     {
         return [
             //
-            'user_id'=>User::factory()->create(),
-            'title'=>fake()->sentence(),
-            'description'=>fake()->paragraph(),
-            'date'=>fake()->date(),
-            'image'=>fake()->image()
+            'user_id' => User::factory()->create(),
+            'title' => fake()->sentence(),
+            'description' => fake()->paragraph(),
+            'date' => fake()->date(),
+            'image' => fake()->image(),
         ];
     }
 }

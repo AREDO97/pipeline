@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -12,7 +13,7 @@ class CheckRole
         // Check if user is logged in AND their role exists in the allowed roles array
         if (! $request->user() || ! in_array($request->user()->role, $roles)) {
             return response()->json([
-                'message' => 'Unauthorized action !!'
+                'message' => 'Unauthorized action !!',
             ], 403);
         }
 
