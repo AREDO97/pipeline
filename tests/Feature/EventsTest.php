@@ -56,3 +56,25 @@ test('users can acces events', function () {
 
     $response->assertStatus(200);
 });
+
+// update events by admins
+
+test('admins can update an event', function () {
+
+    // user
+    $user = User::factory()->create([
+        'role' => 'super_admin',
+    ]);
+    Sanctum::actingAs($user);
+    // create events
+    $events = Event::factory()->count(10)->create();
+    $response = $this->postJson('/api/event/1/update', [
+        'user_id' => $user->id,
+        'title' => 'Ivan Joe',
+        'description' => 'van@gmail.com',
+        'date' => '2026-09-03 12:31:28',
+        'image' => UploadedFile::fake()->image('events.png'),
+    ]);
+
+    $response->assertStatus(200);
+});
