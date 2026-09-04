@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Audit;
 use App\Models\Enrollment;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,8 +32,13 @@ class AuthController extends Controller
         // Token & Audit Log
         $token = $user->createToken('auth-token')->plainTextToken;
 
-        // create enrollment
-
+        // log action
+        Audit::logAction(
+            $user->id,
+            'Account creation',
+            $user->name." created an account"
+        );
+            // response
         return response()->json([
             'message' => 'Account created successfully',
             'user' => $user,
