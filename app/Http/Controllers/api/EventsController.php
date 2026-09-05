@@ -115,4 +115,17 @@ class EventsController extends Controller
     {
         return response()->json($event);    
     }
+    // search events
+    public function search(Request $request)
+    {
+        $request->validate([
+            'query' => 'required|string',
+        ]);
+        $query = $request->input('query');
+        $events = Event::where('title', 'like', "%$query%")
+            ->orWhere('description', 'like', "%$query%")
+            ->latest()
+            ->paginate(10);   
+            return response()->json($events);  
+    }
 }
