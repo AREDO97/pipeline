@@ -38,5 +38,5 @@ jobs:
           DB_DATABASE: database/database.sqlite
         run: php artisan test
 
-         - name: Build Docker image
+      - name: Build Docker image
         run: docker build -t laravel-app .
