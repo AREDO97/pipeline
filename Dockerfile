@@ -21,7 +21,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
 
 RUN composer install \
-    --no-dev \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader
